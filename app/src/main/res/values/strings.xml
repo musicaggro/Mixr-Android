@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mixr</string>
+    <string name="music_player">music player dataway</string>
+
 </resources>
