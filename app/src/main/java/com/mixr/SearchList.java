@@ -23,6 +23,10 @@ public class SearchList extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
     }
 
+    public void search(){
+
+    }
+
     public void musicPlayer(View view){
         Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
         startActivity(musicPlayerIntent);
