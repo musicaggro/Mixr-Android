@@ -1,9 +1,10 @@
-package com.mixr;
+package com.mixr.Networking;
 
 /**
- * Mixr
- * com.mixr
- * 11/6/2019
+ * Project Name: Mixr
+ * Pacakage Name: com.mixr
+ * Date: 11/6/2019
+ *
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved

@@ -1,4 +1,4 @@
-package com.mixr;
+package com.mixr.Application;
 
 /**
  * Project Name: Mixr
@@ -12,6 +12,7 @@ package com.mixr;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,6 +21,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.mixr.R;
 
 public class MusicPlayer extends AppCompatActivity {
 
@@ -97,7 +100,7 @@ public class MusicPlayer extends AppCompatActivity {
         }.start();
     }
 
-    Handler handler = new Handler() {
+    Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
             int currentTimeNumb = msg.what;
             seekBar.setProgress(currentTimeNumb);

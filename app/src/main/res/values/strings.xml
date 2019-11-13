@@ -2,4 +2,8 @@
     <string name="app_name">Mixr</string>
     <string name="music_player">music player dataway</string>
 
+    <!-- MusicPlayer Strings -->
+    <string name="album_description">Description of album goes here wow!</string>
+    <string name="play_button_description">Description of play button goes here wow!</string>
+
 </resources>
