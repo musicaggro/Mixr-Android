@@ -37,44 +37,43 @@ public class SearchList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-        testCall();
     }
 
-    public void search(){
+    public void search() {
 
     }
 
-    public void musicPlayer(View view){
+    public void musicPlayer(View view) {
         Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
         startActivity(musicPlayerIntent);
     }
 
-    public void testCall(){
+    public void testCall(View view) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        SoundCloudService soundCloudService = retrofit.create(SoundCloudService.class);
-        SoundCloudService.getRecentTracks("last_week").enqueue(new Callback<List<SoundTrack>>(){
+        SoundCloudService scRetroService = retrofit.create(SoundCloudService.class);
+        scRetroService.getRecentTracks("last_week").enqueue(new Callback<List<SoundTrack>>() {
             @Override
             public void onResponse(Call<List<SoundTrack>> call, Response<List<SoundTrack>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<SoundTrack> tracks = response.body();
-                    testSongToast(tracks.get(0).getSongTitle());
-                } else{
-                    testSongToast("Error code " + response.code());
+                    toastMsg(tracks.get(0).getSongTitle());
+                } else {
+                    toastMsg("Error code " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<SoundTrack>> call, Throwable t){
-                testSongToast("Network Error: " + t.getMessage());
+            public void onFailure(Call<List<SoundTrack>> call, Throwable t) {
+                toastMsg("Network Error: " + t.getMessage());
             }
         });
     }
 
-    public void testSongToast(String msg){
+    public void toastMsg(String msg) {
         Toast.makeText(SearchList.this, msg, Toast.LENGTH_LONG).show();
     }
 

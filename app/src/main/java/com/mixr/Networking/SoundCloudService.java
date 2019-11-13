@@ -20,10 +20,10 @@ import retrofit2.http.Query;
 public interface SoundCloudService {
 
     /**
-     * @param date
+     * @param date the user query they typed in the search
      * @return
      */
-    @GET ("/tracks?client_id=" + Config.CLIENT_ID)
+    @GET ("/tracks" + "?client_id=" + Config.CLIENT_ID)
     Call<List<SoundTrack>> getRecentTracks(@Query("created_at") String date);
 
 }
