@@ -3,7 +3,7 @@ package com.mixr.Application;
 /**
  * Project Name: Mixr
  * Date: 11/6/2019
- * Description:
+ * Description: Music Player activity to play received song from Search List activity
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved

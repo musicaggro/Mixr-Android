@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Project Name: Mixr
  * Package Name: com.mixr.Application
  * Date: 11/12/2019
- * Description:
+ * Description: Track object that receives a Java object from GSON to deserialize into values
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved

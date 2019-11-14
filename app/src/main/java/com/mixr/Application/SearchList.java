@@ -4,7 +4,7 @@ package com.mixr.Application;
 /**
  * Project Name: Mixr
  * Date: 11/6/2019
- * Description:
+ * Description: Search List activity to allow user search and display in a recycler view.
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
@@ -12,12 +12,14 @@ package com.mixr.Application;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mixr.Config.Config;
+import com.mixr.Networking.SoundCloudAPI;
 import com.mixr.Networking.SoundCloudService;
 import com.mixr.Networking.SoundTrack;
 import com.mixr.R;
@@ -27,8 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class SearchList extends AppCompatActivity {
@@ -49,18 +49,19 @@ public class SearchList extends AppCompatActivity {
     }
 
     public void testCall(View view) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        SearchView userInput = findViewById(R.id.searchView);
+        String userInputStr = userInput.getQuery().toString();
 
-        SoundCloudService scRetroService = retrofit.create(SoundCloudService.class);
-        scRetroService.getRecentTracks("last_week").enqueue(new Callback<List<SoundTrack>>() {
+        SoundCloudService scRetroService = SoundCloudAPI.getScService();
+        scRetroService.search(userInputStr).enqueue(new Callback<List<SoundTrack>>() {
             @Override
             public void onResponse(Call<List<SoundTrack>> call, Response<List<SoundTrack>> response) {
                 if (response.isSuccessful()) {
                     List<SoundTrack> tracks = response.body();
                     toastMsg(tracks.get(0).getSongTitle());
+                    for(SoundTrack currentSong : tracks){
+                        Log.d("Song Title ", currentSong.getSongTitle());
+                    }
                 } else {
                     toastMsg("Error code " + response.code());
                 }
