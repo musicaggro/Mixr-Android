@@ -53,6 +53,8 @@ public class SearchList extends AppCompatActivity {
         String userInputStr = userInput.getQuery().toString();
 
         SoundCloudService scRetroService = SoundCloudAPI.getScService();
+
+        if(!userInputStr.isEmpty()){
         scRetroService.search(userInputStr).enqueue(new Callback<List<SoundTrack>>() {
             @Override
             public void onResponse(Call<List<SoundTrack>> call, Response<List<SoundTrack>> response) {
@@ -71,7 +73,10 @@ public class SearchList extends AppCompatActivity {
             public void onFailure(Call<List<SoundTrack>> call, Throwable t) {
                 toastMsg("Network Error: " + t.getMessage());
             }
-        });
+        });}
+        else if(userInputStr.isEmpty()){
+            toastMsg("Please enter a searchable Track!");
+        }
     }
 
     public void toastMsg(String msg) {

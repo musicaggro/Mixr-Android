@@ -45,6 +45,19 @@ public class MusicPlayer extends AppCompatActivity {
         seekBar();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
     public void findViewIds() {
         albmuCoverIV = findViewById(R.id.albumCover);
         seekBar = findViewById(R.id.seekBar);
@@ -73,12 +86,10 @@ public class MusicPlayer extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -129,7 +140,6 @@ public class MusicPlayer extends AppCompatActivity {
 
 
     public void playSong(View view) {
-
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             playPauseButtonIB.setImageResource(R.drawable.stop);
@@ -137,7 +147,6 @@ public class MusicPlayer extends AppCompatActivity {
             mediaPlayer.pause();
             playPauseButtonIB.setImageResource(R.drawable.play);
         }
-
     }
 
 }
