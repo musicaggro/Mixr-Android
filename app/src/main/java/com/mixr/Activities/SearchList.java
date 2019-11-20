@@ -1,4 +1,4 @@
-package com.mixr.Application;
+package com.mixr.Activities;
 
 
 /**
@@ -43,9 +43,11 @@ public class SearchList extends AppCompatActivity {
 
     }
 
-    public void musicPlayer(View view) {
-        Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
-        startActivity(musicPlayerIntent);
+    public void musicPlayer(String streamURl, String albumUrl) {
+            Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
+            musicPlayerIntent.putExtra("streamUrl", streamURl);
+            musicPlayerIntent.putExtra("albumUrl", albumUrl);
+            startActivity(musicPlayerIntent);
     }
 
     public void testCall(View view) {
@@ -61,9 +63,13 @@ public class SearchList extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     List<SoundTrack> tracks = response.body();
                     toastMsg(tracks.get(0).getSongTitle());
+                    musicPlayer(tracks.get(0).getStreamUrl(), tracks.get(0).getSongArtworkUrl());
+
                     for(SoundTrack currentSong : tracks){
                         Log.d("Song Title ", currentSong.getSongTitle());
+                        Log.d("Stream Url " , currentSong.getStreamUrl());
                     }
+
                 } else {
                     toastMsg("Error code " + response.code());
                 }

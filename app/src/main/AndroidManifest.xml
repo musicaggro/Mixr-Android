@@ -10,8 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Application.MusicPlayer"></activity>
-        <activity android:name=".Application.SearchList">
+        <activity android:name=".Activities.MusicPlayer"></activity>
+        <activity android:name=".Activities.SearchList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

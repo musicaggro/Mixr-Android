@@ -1,4 +1,4 @@
-package com.mixr.Application;
+package com.mixr.Activities;
 
 /**
  * Project Name: Mixr
@@ -9,6 +9,8 @@ package com.mixr.Application;
  * Copyright © Elias Afzalzada - All Rights Reserved
  */
 
+import android.content.Intent;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +24,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mixr.Config.Config;
 import com.mixr.R;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 public class MusicPlayer extends AppCompatActivity {
 
@@ -67,9 +73,26 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     public void mediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.buddha);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.seekTo(0);
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioAttributes(new AudioAttributes
+                .Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build());
+        setSong();
+    }
+
+    public void setSong() {
+        Intent intent = getIntent();
+        String streamUrl = intent.getStringExtra("streamUrl");
+        String albumUrl = intent.getStringExtra("albumUrl");
+
+        try {
+            Picasso.get().load(albumUrl).into(albmuCoverIV);
+            mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void seekBar() {
@@ -142,11 +165,19 @@ public class MusicPlayer extends AppCompatActivity {
     public void playSong(View view) {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            playPauseButtonIB.setImageResource(R.drawable.stop);
+            playPauseButtonIB.setImageResource(R.drawable.pause);
         } else {
             mediaPlayer.pause();
             playPauseButtonIB.setImageResource(R.drawable.play);
         }
+
+
+        //else {
+        //mediaPlayer.pause();
+        //playPauseButtonIB.setImageResource(R.drawable.play);
+        //}
     }
+
+
 
 }
