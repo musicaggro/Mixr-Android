@@ -45,9 +45,12 @@ public class MusicPlayer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music_player);
-        findViewIds();
+        setContentView(R.layout.music_player);
+        initViewIds();
         mediaPlayer();
+
+
+        //TODO: Seekbar out of sync/stops working on user interaction
         seekBar();
     }
 
@@ -64,7 +67,7 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
-    public void findViewIds() {
+    public void initViewIds() {
         albmuCoverIV = findViewById(R.id.albumCover);
         seekBar = findViewById(R.id.seekBar);
         currentSongTimeTV = findViewById(R.id.currentSongTime);
@@ -171,13 +174,6 @@ public class MusicPlayer extends AppCompatActivity {
             playPauseButtonIB.setImageResource(R.drawable.play);
         }
 
-
-        //else {
-        //mediaPlayer.pause();
-        //playPauseButtonIB.setImageResource(R.drawable.play);
-        //}
     }
-
-
 
 }

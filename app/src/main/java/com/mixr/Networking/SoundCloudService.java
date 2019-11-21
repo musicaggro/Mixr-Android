@@ -20,9 +20,9 @@ import retrofit2.http.Query;
 public interface SoundCloudService {
 
     @GET ("/tracks?client_id=" + Config.CLIENT_ID)
-    Call<List<SoundTrack>> getRecentTracks(@Query("created_at") String dateTrackCreated);
+    Call<List<Track>> getRecentTracks(@Query("created_at") String dateTrackCreated);
 
     @GET ("/tracks?client_id=" + Config.CLIENT_ID)
-    Call<List<SoundTrack>> search(@Query("q") String userRequestedSearch);
+    Call<List<Track>> search(@Query("q") String userRequestedSearch);
 
 }

@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
  */
-public class SoundTrack {
+public class Track {
 
     @SerializedName("title")
     private String songTitle;

@@ -18,12 +18,16 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.mixr.Adapter.RecyclerViewAdapter;
 import com.mixr.Networking.SoundCloudAPI;
 import com.mixr.Networking.SoundCloudService;
-import com.mixr.Networking.SoundTrack;
+import com.mixr.Networking.Track;
 import com.mixr.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,60 +37,109 @@ import retrofit2.Response;
 
 public class SearchList extends AppCompatActivity {
 
+    private List<Track> listItems;
+    private RecyclerViewAdapter listAdapter;
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_list);
-    }
-
-    public void search() {
-
+        setContentView(R.layout.search_list);
+        initRecyclerView();
     }
 
     public void musicPlayer(String streamURl, String albumUrl) {
-            Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
-            musicPlayerIntent.putExtra("streamUrl", streamURl);
-            musicPlayerIntent.putExtra("albumUrl", albumUrl);
-            startActivity(musicPlayerIntent);
+        Intent musicPlayerIntent = new Intent(this, MusicPlayer.class);
+        musicPlayerIntent.putExtra("streamUrl", streamURl);
+        musicPlayerIntent.putExtra("albumUrl", albumUrl);
+        startActivity(musicPlayerIntent);
     }
 
+    //TODO: delete this test method after finished
     public void testCall(View view) {
         SearchView userInput = findViewById(R.id.searchView);
         String userInputStr = userInput.getQuery().toString();
 
         SoundCloudService scRetroService = SoundCloudAPI.getScService();
 
-        if(!userInputStr.isEmpty()){
-        scRetroService.search(userInputStr).enqueue(new Callback<List<SoundTrack>>() {
-            @Override
-            public void onResponse(Call<List<SoundTrack>> call, Response<List<SoundTrack>> response) {
-                if (response.isSuccessful()) {
-                    List<SoundTrack> tracks = response.body();
-                    toastMsg(tracks.get(0).getSongTitle());
-                    musicPlayer(tracks.get(0).getStreamUrl(), tracks.get(0).getSongArtworkUrl());
+        if (!userInputStr.isEmpty()) {
+            scRetroService.search(userInputStr).enqueue(new Callback<List<Track>>() {
+                @Override
+                public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
+                    if (response.isSuccessful()) {
+                        List<Track> tracks = response.body();
+                        toastMsg(tracks.get(0).getSongTitle());
+                        musicPlayer(tracks.get(0).getStreamUrl(), tracks.get(0).getSongArtworkUrl());
 
-                    for(SoundTrack currentSong : tracks){
-                        Log.d("Song Title ", currentSong.getSongTitle());
-                        Log.d("Stream Url " , currentSong.getStreamUrl());
+                        for (Track currentSong : tracks) {
+                            Log.d("Song Title ", currentSong.getSongTitle());
+                            Log.d("Stream Url ", currentSong.getStreamUrl());
+                        }
+
+                    } else {
+                        toastMsg("Error code " + response.code());
                     }
-
-                } else {
-                    toastMsg("Error code " + response.code());
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<SoundTrack>> call, Throwable t) {
-                toastMsg("Network Error: " + t.getMessage());
-            }
-        });}
-        else if(userInputStr.isEmpty()){
+                @Override
+                public void onFailure(Call<List<Track>> call, Throwable t) {
+                    toastMsg("Network Error: " + t.getMessage());
+                }
+            });
+        } else if (userInputStr.isEmpty()) {
+            toastMsg("Please enter a searchable Track!");
+        }
+    }
+
+    //TODO: clean up
+    public void search(View view) {
+        SearchView userInput = findViewById(R.id.searchView);
+        String userInputStr = userInput.getQuery().toString();
+
+        SoundCloudService scRetroService = SoundCloudAPI.getScService();
+
+        if (!userInputStr.isEmpty()) {
+            scRetroService.search(userInputStr).enqueue(new Callback<List<Track>>() {
+                @Override
+                public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
+                    if (response.isSuccessful()) {
+                        List<Track> tracks = response.body();
+                        loadTracks(tracks);
+                        for (Track currentSong : tracks) {
+                            Log.d("Song Title ", currentSong.getSongTitle());
+                            Log.d("Stream Url ", currentSong.getStreamUrl());
+                        }
+                    } else {
+                        toastMsg("Error code " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Track>> call, Throwable t) {
+                    toastMsg("Network Error: " + t.getMessage());
+                }
+            });
+        } else if (userInputStr.isEmpty()) {
             toastMsg("Please enter a searchable Track!");
         }
     }
 
     public void toastMsg(String msg) {
         Toast.makeText(SearchList.this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    private void initRecyclerView(){
+        listItems = new ArrayList<Track>();
+        recyclerView = findViewById(R.id.recyclerView);
+        listAdapter = new RecyclerViewAdapter(this, listItems);
+        recyclerView.setAdapter(listAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void loadTracks(List<Track> tracks){
+        listItems.clear();
+        listItems.addAll(tracks);
+        listAdapter.notifyDataSetChanged();
     }
 
 }
