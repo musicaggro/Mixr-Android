@@ -30,28 +30,27 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class MusicPlayer extends AppCompatActivity {
+public class MusicPlayerActivity extends AppCompatActivity {
 
     // UI elements
-    private ImageView albmuCoverIV;
+    private ImageView albumCoverIV;
     private SeekBar seekBar;
     private TextView currentSongTimeTV;
     private TextView totalSongTimeTV;
     private ImageButton playPauseButtonIB;
+    private TextView songTitleTV;
 
-    //MediaPlayer linked to local song for now
     private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.music_player);
+        setContentView(R.layout.music_player_layout);
         initViewIds();
-        mediaPlayer();
-
+        initMediaPlayer();
 
         //TODO: Seekbar out of sync/stops working on user interaction
-        seekBar();
+        initSeekBar();
     }
 
     @Override
@@ -68,14 +67,14 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     public void initViewIds() {
-        albmuCoverIV = findViewById(R.id.albumCover);
+        albumCoverIV = findViewById(R.id.albumCover);
         seekBar = findViewById(R.id.seekBar);
         currentSongTimeTV = findViewById(R.id.currentSongTime);
         totalSongTimeTV = findViewById(R.id.totalSongTime);
         playPauseButtonIB = findViewById(R.id.playButton);
     }
 
-    public void mediaPlayer() {
+    public void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioAttributes(new AudioAttributes
                 .Builder()
@@ -90,7 +89,7 @@ public class MusicPlayer extends AppCompatActivity {
         String albumUrl = intent.getStringExtra("albumUrl");
 
         try {
-            Picasso.get().load(albumUrl).into(albmuCoverIV);
+            Picasso.get().load(albumUrl).into(albumCoverIV);
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
@@ -98,7 +97,7 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
-    public void seekBar() {
+    public void initSeekBar() {
         seekBar.setMax(mediaPlayer.getDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -120,17 +119,14 @@ public class MusicPlayer extends AppCompatActivity {
         });
 
         // thread to update seekbar and song time stamps
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (mediaPlayer != null) {
-                    try {
-                        Message msg = new Message();
-                        msg.what = mediaPlayer.getCurrentPosition();
-                        handler.sendMessage(msg);
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                    }
+        new Thread(() -> {
+            while (mediaPlayer != null) {
+                try {
+                    Message msg = new Message();
+                    msg.what = mediaPlayer.getCurrentPosition();
+                    handler.sendMessage(msg);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                 }
             }
         }) {
