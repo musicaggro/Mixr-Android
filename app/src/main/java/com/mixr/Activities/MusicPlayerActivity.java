@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,7 +49,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_layout);
         initViewIds();
         initMediaPlayer();
-
         //TODO: Seekbar out of sync/stops working on user interaction
         initSeekBar();
     }
@@ -72,6 +72,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         currentSongTimeTV = findViewById(R.id.currentSongTime);
         totalSongTimeTV = findViewById(R.id.totalSongTime);
         playPauseButtonIB = findViewById(R.id.playButton);
+        songTitleTV = findViewById(R.id.songTitle);
     }
 
     public void initMediaPlayer() {
@@ -87,9 +88,22 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String streamUrl = intent.getStringExtra("streamUrl");
         String albumUrl = intent.getStringExtra("albumUrl");
+        String songTitle = intent.getStringExtra("songTitle");
+
+        songTitleTV.setText(songTitle);
+
+        // Check to see if an album is provided if not a default one is set
+        if(albumUrl != null){
+            Picasso.get().load(albumUrl).into(albumCoverIV);
+        } else {
+            Picasso.get().load(R.drawable.default_album_image).into(albumCoverIV);
+        }
+
+        //TODO: test URL is valid?
+        Log.e(streamUrl, "StreamURL: ");
+
 
         try {
-            Picasso.get().load(albumUrl).into(albumCoverIV);
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
@@ -163,7 +177,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     public void playSong(View view) {
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
+            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
             playPauseButtonIB.setImageResource(R.drawable.pause);
         } else {
             mediaPlayer.pause();

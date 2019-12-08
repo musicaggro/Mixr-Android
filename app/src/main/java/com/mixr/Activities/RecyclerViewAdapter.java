@@ -43,10 +43,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int position) {
-        Picasso.get()
-                .load(tracks.get(position).getSongArtworkUrl())
-                .into(viewHolder.albumImage);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
+        // Some songs dont have an album image so I set a default one
+        if(tracks.get(position).getSongArtworkUrl() != null){
+            Picasso.get()
+                    .load(tracks.get(position).getSongArtworkUrl())
+                    .into(viewHolder.albumImage);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.default_album_image)
+                    .into(viewHolder.albumImage);
+        }
         viewHolder.songTitle.setText(tracks.get(position).getSongTitle());
     }
 
@@ -56,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView albumImage;
         TextView songTitle;
@@ -75,7 +82,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-        onTrackListener.onTrackClick(getAdapterPosition());
+            onTrackListener.onTrackClick(getAdapterPosition());
         }
     }
 

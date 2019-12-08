@@ -72,6 +72,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
         musicPlayerIntent.putExtra("streamUrl", streamURl);
         musicPlayerIntent.putExtra("albumUrl", albumUrl);
+        musicPlayerIntent.putExtra("songTitle", songTitle);
         startActivity(musicPlayerIntent);
     }
 
@@ -109,7 +110,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 toastMsg("Network Error: " + t.getMessage());
             }
         });
-
         return false;
     }
 

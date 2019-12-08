@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/darker_gray"
-    android:padding="15dp"
-    android:id="@+id/parent_layout">
+    android:background="@color/colorPrimaryDark"
+    android:padding="15dp">
 
     <ImageView
         android:id="@+id/albumCover"
@@ -20,6 +20,8 @@
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/albumCover"
         android:text="test text for track item wowwowowowowowow"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         android:textSize="18dp" />
 
 
