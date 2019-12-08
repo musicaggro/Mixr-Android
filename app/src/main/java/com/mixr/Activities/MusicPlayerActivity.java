@@ -89,11 +89,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         String streamUrl = intent.getStringExtra("streamUrl");
         String albumUrl = intent.getStringExtra("albumUrl");
         String songTitle = intent.getStringExtra("songTitle");
-
         songTitleTV.setText(songTitle);
 
         // Check to see if an album is provided if not a default one is set
-        if(albumUrl != null){
+        if (albumUrl != null) {
             Picasso.get().load(albumUrl).into(albumCoverIV);
         } else {
             Picasso.get().load(R.drawable.default_album_image).into(albumCoverIV);
@@ -101,8 +100,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         //TODO: test URL is valid?
         Log.e(streamUrl, "StreamURL: ");
-
-
         try {
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
             mediaPlayer.prepareAsync();
@@ -114,22 +111,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
     public void initSeekBar() {
         seekBar.setMax(mediaPlayer.getDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
-                    seekBar.setProgress(progress);
+                    //seekBar.setProgress(progress);
                 }
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) { }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
         // thread to update seekbar and song time stamps
@@ -151,6 +143,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             int currentTimeNumb = msg.what;
             seekBar.setProgress(currentTimeNumb);
+
+
 
             String currentTimeStr = songTimeConversion(currentTimeNumb);
             currentSongTimeTV.setText(currentTimeStr);
@@ -183,7 +177,5 @@ public class MusicPlayerActivity extends AppCompatActivity {
             mediaPlayer.pause();
             playPauseButtonIB.setImageResource(R.drawable.play);
         }
-
     }
-
 }
