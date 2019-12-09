@@ -49,14 +49,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_layout);
         initViewIds();
         initMediaPlayer();
-        //TODO: Seekbar out of sync/stops working on user interaction
-        initSeekBar();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -100,6 +97,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         //TODO: test URL is valid?
         Log.e(streamUrl, "StreamURL: ");
+
         try {
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
             mediaPlayer.prepareAsync();
@@ -171,7 +169,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     public void playSong(View view) {
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
+            mediaPlayer.setOnPreparedListener(mp -> {
+                initSeekBar();
+                mediaPlayer.start();
+            });
             playPauseButtonIB.setImageResource(R.drawable.pause);
         } else {
             mediaPlayer.pause();
