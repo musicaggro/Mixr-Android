@@ -32,7 +32,7 @@ public class Track {
     private String songDescription;
 
     @SerializedName("duration")
-    private String songTotalTime;
+    private String songTotalDuration;
 
     @SerializedName("playback_count")
     private String songTotalPlaybacks;
@@ -65,8 +65,8 @@ public class Track {
         return songDescription;
     }
 
-    public String getSongTotalTime() {
-        return songTotalTime;
+    public String getSongTotalDuration() {
+        return songTotalDuration;
     }
 
     public String getSongTotalPlaybacks() {

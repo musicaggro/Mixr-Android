@@ -83,8 +83,20 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 if (response.isSuccessful()) {
                     List<Track> tracks = response.body();
 
-                    //TODO: checking amount of tracks returned
-                    Log.e("JSON BODY", response.body().toString());
+                    //TODO: check tracks/values received noted users dont fill all values
+                    for(Track track: tracks){
+                        Log.e("JSON BODY",track.getSongTitle() + "\n"
+                                + track.getSongUserID() + "\n"
+                                + track.getSongGenre() + "\n"
+                                + track.getSongDescription() + "\n"
+                                + track.getSongTotalDuration() + "\n"
+                                + track.getSongTotalPlaybacks() + "\n"
+                                + track.getSongTotalLikes() + "\n"
+                                + track.getSongArtworkUrl() + "\n"
+                                + track.getSongStreamUrl() + "\n"
+                                + track.getSongCurrentState() + "\n\n");
+                    }
+
 
                     loadTracks(tracks);
                 } else {

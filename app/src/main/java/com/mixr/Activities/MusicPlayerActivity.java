@@ -150,8 +150,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
             String currentTimeStr = songTimeConversion(currentTimeNumb);
             currentSongTimeTV.setText(currentTimeStr);
 
-            String totalTimeStr = songTimeConversion(mediaPlayer.getDuration());
-            totalSongTimeTV.setText(totalTimeStr);
+            String songTotalDuration = songTimeConversion(mediaPlayer.getDuration());
+            totalSongTimeTV.setText(songTotalDuration);
         }
     };
 
