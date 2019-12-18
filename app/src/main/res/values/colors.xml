@@ -5,6 +5,4 @@
     <color name="colorAccent">#f9aa33</color>
     <color name="screenBackground">#4a6572</color>
     <color name="colorAccentDark">#FFC44D</color>
-    <!-- global default unfocused text box color -->
-    <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 </resources>

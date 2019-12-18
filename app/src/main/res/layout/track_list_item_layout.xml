@@ -23,5 +23,4 @@
         android:textColorHint="@android:color/white"
         android:textSize="18dp" />
 
-
 </RelativeLayout>

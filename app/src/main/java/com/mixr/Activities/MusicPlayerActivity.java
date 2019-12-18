@@ -96,7 +96,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
 
         //TODO: test URL is valid?
-        Log.e(streamUrl, "StreamURL: ");
+        Log.e("Stream_url",streamUrl);
 
         try {
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
@@ -116,10 +116,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     //seekBar.setProgress(progress);
                 }
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
         // thread to update seekbar and song time stamps
@@ -141,7 +145,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             int currentTimeNumb = msg.what;
             seekBar.setProgress(currentTimeNumb);
-
 
 
             String currentTimeStr = songTimeConversion(currentTimeNumb);

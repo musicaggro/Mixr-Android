@@ -12,13 +12,13 @@ package com.mixr.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-// TODO: prevent double click
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class SearchListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, RecyclerViewAdapter.OnTrackListener {
 
     private List<Track> listItems;
@@ -43,7 +42,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     private RecyclerView recyclerView;
     private MenuItem searchMenuItem;
     private SearchView searchView;
-    private SoundCloudService scRetroService = SoundCloudAPI.getScService();
+    private SoundCloudService soundcloudService = SoundCloudAPI.getSoundcloudService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,24 +65,27 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_layout, menu);
 
-        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchMenuItem.getActionView();
 
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
 
         return true;
     }
 
+
     @Override
     public boolean onQueryTextSubmit(String query) {
-        scRetroService.search(query).enqueue(new Callback<List<Track>>() {
+        soundcloudService.search(query).enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 if (response.isSuccessful()) {
                     List<Track> tracks = response.body();
+
+                    //TODO: checking amount of tracks returned
+                    Log.e("JSON BODY", response.body().toString());
+
                     loadTracks(tracks);
                 } else {
                     toastMsg("Error code " + response.code());
@@ -99,7 +101,9 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) { return false; }
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 
     private void loadTracks(List<Track> tracks) {
         listItems.clear();
@@ -113,7 +117,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onTrackClick(int position) {
-        musicPlayerIntent(listItems.get(position).getStreamUrl(),
+        musicPlayerIntent(listItems.get(position).getSongStreamUrl(),
                 listItems.get(position).getSongTitle(),
                 listItems.get(position).getSongArtworkUrl());
     }
