@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +48,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_layout);
         initViewIds();
         initMediaPlayer();
+        initSeekBar();
     }
 
     @Override
@@ -95,9 +95,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
             Picasso.get().load(R.drawable.default_album_image).into(albumCoverIV);
         }
 
-        //TODO: test URL is valid?
-        Log.e("Stream_url",streamUrl);
-
         try {
             mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
             mediaPlayer.prepareAsync();
@@ -107,13 +104,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     public void initSeekBar() {
-        seekBar.setMax(mediaPlayer.getDuration());
+        Intent intent = getIntent();
+        seekBar.setMax(intent.getIntExtra("songDuration", 0));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
-                    //seekBar.setProgress(progress);
+                    seekBar.setProgress(progress);
                 }
             }
 
@@ -150,7 +148,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
             String currentTimeStr = songTimeConversion(currentTimeNumb);
             currentSongTimeTV.setText(currentTimeStr);
 
-            String songTotalDuration = songTimeConversion(mediaPlayer.getDuration());
+            Intent intent = getIntent();
+            int songDuration = intent.getIntExtra("songDuration", 0);
+            String songTotalDuration = songTimeConversion(songDuration);
             totalSongTimeTV.setText(songTotalDuration);
         }
     };
@@ -172,10 +172,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     public void playSong(View view) {
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.setOnPreparedListener(mp -> {
-                initSeekBar();
-                mediaPlayer.start();
-            });
+            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
             playPauseButtonIB.setImageResource(R.drawable.pause);
         } else {
             mediaPlayer.pause();

@@ -77,6 +77,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        // asynchronous call passing a callback function
         soundcloudService.search(query).enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -89,7 +90,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                                 + track.getSongUserID() + "\n"
                                 + track.getSongGenre() + "\n"
                                 + track.getSongDescription() + "\n"
-                                + track.getSongTotalDuration() + "\n"
+                                + track.getSongDuration() + "\n"
                                 + track.getSongTotalPlaybacks() + "\n"
                                 + track.getSongTotalLikes() + "\n"
                                 + track.getSongArtworkUrl() + "\n"
@@ -129,16 +130,18 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onTrackClick(int position) {
-        musicPlayerIntent(listItems.get(position).getSongStreamUrl(),
+        startMusicPlayer(listItems.get(position).getSongStreamUrl(),
                 listItems.get(position).getSongTitle(),
-                listItems.get(position).getSongArtworkUrl());
+                listItems.get(position).getSongArtworkUrl(),
+                listItems.get(position).getSongDuration());
     }
 
-    public void musicPlayerIntent(String streamURl, String songTitle, String albumUrl) {
+    public void startMusicPlayer(String streamURl, String songTitle, String albumUrl, int duration) {
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
         musicPlayerIntent.putExtra("streamUrl", streamURl);
         musicPlayerIntent.putExtra("albumUrl", albumUrl);
         musicPlayerIntent.putExtra("songTitle", songTitle);
+        musicPlayerIntent.putExtra("songDuration", duration);
         startActivity(musicPlayerIntent);
     }
 }

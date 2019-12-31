@@ -15,7 +15,6 @@ import retrofit2.http.Query;
  * Description: Using Retrofit this interface allows the declaration of methods that
  * represent Soundcloud api endpoints. Data is downloaded and parsed into a POJO.
  *
- *
  * SoundCloud HTTP API reference: https://developers.soundcloud.com/docs/api/reference#tracks
  *
  * @Author Elias Afzalzada

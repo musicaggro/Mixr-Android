@@ -12,7 +12,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:itemCount="20"
+        tools:itemCount="15"
         tools:listitem="@layout/example_item_layout" />
 
 </RelativeLayout>

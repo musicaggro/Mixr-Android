@@ -19,12 +19,11 @@ public class SoundCloudAPI {
 
     private static final Retrofit RETROFIT = new Retrofit.Builder()
             .baseUrl(Config.BASE_API_URL)
-            // retrofit uses json converter used for serialization and deserialization of objects
+            // adds json converter used for serialization and deserialization of objects
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-
-    // Implements API interface then uses polymorphism to turn it into an object making requests
+    // Implements API interface then uses polymorphism to turn it into an object that makes requests
     private static final SoundCloudService SC_SERVICE = RETROFIT.create(SoundCloudService.class);
 
     public static SoundCloudService getSoundcloudService() {
