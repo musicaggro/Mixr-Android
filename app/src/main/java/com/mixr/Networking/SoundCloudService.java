@@ -28,4 +28,11 @@ public interface SoundCloudService {
     // The query tag allows use of specific filters set by Soundcloud to narrow search results
     Call<List<Track>> search(@Query("q") String userRequestedSearch);
 
+    @GET("/tracks?client_id=" + Config.CLIENT_ID)
+    Call<List<Track>> getRecentTracks(@Query("created_at") String date);
+
+    // TODO: Display trending SoundCloud tracks on app start, have to probe with chrome inspect
+    // https://stackoverflow.com/questions/35688367/access-soundcloud-charts-with-api
+    //@GET ("/charts?client_id=" + Config.CLIENT_ID)
+    //Call<List<Track>> trendingTracks();
 }

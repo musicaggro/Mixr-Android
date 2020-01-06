@@ -57,6 +57,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         listAdapter = new RecyclerViewAdapter(trackArrList, this);
         recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        callRecentTracks();
     }
 
     @Override
@@ -73,12 +74,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
-    // Watches search bar for user submitted string to start the call to Soundcloud
+    // Watches search bar for user submitted string to start the call to SoundCloud
     @Override
     public boolean onQueryTextSubmit(String query) {
         // asynchronous call passing a callback function
         soundcloudService.search(query).enqueue(new Callback<List<Track>>() {
-
             // Successfully received HTTP response, acts based on response code
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -92,14 +92,14 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     toastMsg("Error code " + response.code());
                 }
             }
-
             // Catches network exceptions e.g. wrong base api url
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
                 toastMsg("Network Error: " + t.getMessage());
             }
         });
-        return false;
+        searchView.clearFocus();
+        return true;
     }
 
     // Part of SearchViewListener used for predictive text when typing into search bar
@@ -107,6 +107,26 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    // TODO: Switch to trending SoundCloud tracks, have to probe with chrome inspect
+    // https://stackoverflow.com/questions/35688367/access-soundcloud-charts-with-api
+    public void callRecentTracks(){
+        soundcloudService.getRecentTracks("last_two_weeks").enqueue(new Callback<List<Track>>() {
+            @Override
+            public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
+                if (response.isSuccessful()) {
+                    List<Track> tracks = response.body();
+                    loadTracks(tracks);
+                } else {
+                    toastMsg("Error code " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Track>> call, Throwable t) {
+                toastMsg("Network Error: " + t.getMessage());
+            }
+        });
     }
 
     // Loads tracks into arraylist and notify's recyclerViews adapter
