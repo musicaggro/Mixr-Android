@@ -1,4 +1,4 @@
-package com.mixr.Networking;
+package com.mixr.Objects;
 
 
 import com.google.gson.annotations.SerializedName;
