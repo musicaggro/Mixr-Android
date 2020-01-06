@@ -57,7 +57,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         listAdapter = new RecyclerViewAdapter(trackArrList, this);
         recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        callRecentTracks();
+        loadListOfDefaultTrendingTracks();
     }
 
     @Override
@@ -103,15 +103,14 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     // Part of SearchViewListener used for predictive text when typing into search bar
-    // currently not in use but could be used by storing user history and predicting text?
+    //TODO: currently not in use but could be used by storing user history and predicting text?
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
     }
 
-    // TODO: Switch to trending SoundCloud tracks, have to probe with chrome inspect
-    // https://stackoverflow.com/questions/35688367/access-soundcloud-charts-with-api
-    public void callRecentTracks(){
+    // TODO: Idea of switching to SoundCloud trending tracks to display on app start
+    public void loadListOfDefaultTrendingTracks(){
         soundcloudService.getRecentTracks("last_two_weeks").enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
