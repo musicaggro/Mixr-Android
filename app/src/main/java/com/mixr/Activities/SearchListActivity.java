@@ -92,6 +92,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     toastMsg("Error code " + response.code());
                 }
             }
+
             // Catches network exceptions e.g. wrong base api url
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
@@ -110,7 +111,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     // TODO: Idea of switching to SoundCloud trending tracks to display on app start
-    public void loadListOfDefaultTrendingTracks(){
+    public void loadListOfDefaultTrendingTracks() {
         soundcloudService.getRecentTracks("last_two_weeks").enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -121,6 +122,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     toastMsg("Error code " + response.code());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
                 toastMsg("Network Error: " + t.getMessage());

@@ -15,7 +15,7 @@ import retrofit2.http.Query;
  * Date: 11/12/2019
  * Description: Using Retrofit this interface allows the declaration of methods that
  * represent Soundcloud api endpoints. Data is downloaded and parsed into a POJO.
- *
+ * <p>
  * SoundCloud HTTP API reference: https://developers.soundcloud.com/docs/api/reference#tracks
  *
  * @Author Elias Afzalzada
@@ -24,7 +24,7 @@ import retrofit2.http.Query;
 public interface SoundCloudService {
 
     // The annotation describes how the method maps to an HTTP request
-    @GET ("/tracks?client_id=" + Config.CLIENT_ID)
+    @GET("/tracks?client_id=" + Config.CLIENT_ID)
     // The query tag allows use of specific filters set by Soundcloud to narrow search results
     Call<List<Track>> search(@Query("q") String userRequestedSearch);
 

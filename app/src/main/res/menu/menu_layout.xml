@@ -8,6 +8,6 @@
         android:title="Search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:queryHint="Search a song from SoundCloud" />
+        app:queryHint="Type in a song!" />
 
 </menu>
