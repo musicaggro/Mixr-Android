@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class SoundCloudAPI {
 
+    // REST client library used to create HTTP requests and process responses from a REST API
     private static final Retrofit RETROFIT = new Retrofit.Builder()
             .baseUrl(Config.BASE_API_URL)
             // adds json converter used for serialization and deserialization of objects

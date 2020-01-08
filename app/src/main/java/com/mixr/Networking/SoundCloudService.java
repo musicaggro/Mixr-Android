@@ -31,9 +31,4 @@ public interface SoundCloudService {
     @GET("/tracks?client_id=" + Config.CLIENT_ID)
     Call<List<Track>> getRecentTracks(@Query("created_at") String date);
 
-    // TODO: Trending SoundCloud tracks call, have to probe with chrome inspect
-    // API doesn't contain a direct way of getting top tracks
-    // https://stackoverflow.com/questions/35688367/access-soundcloud-charts-with-api
-    //@GET ("/charts?client_id=" + Config.CLIENT_ID)
-    //Call<List<Track>> trendingTracks();
 }
