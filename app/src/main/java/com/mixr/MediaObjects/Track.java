@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * it to the tracks appropriate fields via GSON.
  *
  * Thoughts: I was going to use some form of gson.fromJson(soundcloudJSON, class)
- * but saw an example of how @serializedname is cleaner and more flexible
+ * but saw an example of how @serializedname is cleaner and a more flexible
  * alternative, json field name being different from class value name wont matter.
  *
  * @Author Elias Afzalzada
