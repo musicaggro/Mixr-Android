@@ -38,8 +38,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     private List<Track> trackArrList;
     private RecyclerViewAdapter listAdapter;
-    private RecyclerView recyclerView;
-    private MenuItem searchMenuItem;
     private SearchView searchView;
     private SoundCloudService soundcloudService = SoundCloudAPI.getSoundcloudService();
 
@@ -52,7 +50,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     private void initRecyclerView() {
         trackArrList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         // Avoids expensive size checks of items being added/removed
         recyclerView.setHasFixedSize(true);
 
@@ -70,7 +68,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_layout, menu);
 
-        searchMenuItem = menu.findItem(R.id.action_search);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
