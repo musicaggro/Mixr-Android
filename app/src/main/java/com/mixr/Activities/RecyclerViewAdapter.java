@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mixr.Objects.Track;
+import com.mixr.MediaObjects.Track;
 import com.mixr.R;
 import com.squareup.picasso.Picasso;
 

@@ -1,7 +1,7 @@
 package com.mixr.Networking;
 
 import com.mixr.Config.Config;
-import com.mixr.Objects.Track;
+import com.mixr.MediaObjects.Track;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import retrofit2.http.Query;
  * Date: 11/12/2019
  * Description: Using Retrofit this interface allows the declaration of methods that
  * represent Soundcloud api endpoints. Data is downloaded and parsed into a POJO.
- * <p>
+ *
  * SoundCloud HTTP API reference: https://developers.soundcloud.com/docs/api/reference#tracks
  *
  * @Author Elias Afzalzada

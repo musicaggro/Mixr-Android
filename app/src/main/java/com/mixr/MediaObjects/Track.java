@@ -1,4 +1,4 @@
-package com.mixr.Objects;
+package com.mixr.MediaObjects;
 
 
 import com.google.gson.annotations.SerializedName;

@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mixr.Networking.SoundCloudAPI;
 import com.mixr.Networking.SoundCloudService;
-import com.mixr.Objects.Track;
+import com.mixr.MediaObjects.Track;
 import com.mixr.R;
 
 import java.util.ArrayList;
