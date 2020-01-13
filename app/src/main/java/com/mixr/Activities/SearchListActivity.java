@@ -140,7 +140,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     // Toast message used for debugging and displaying HTTP/Network errors
-    public void toastMsg(String msg) {
+    private void toastMsg(String msg) {
         Toast.makeText(SearchListActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
@@ -155,7 +155,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     // Receives track information to start track playback in a new activity
-    public void startMusicPlayer(String streamURl, String songTitle, String albumUrl, int duration) {
+    private void startMusicPlayer(String streamURl, String songTitle, String albumUrl, int duration) {
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
         musicPlayerIntent.putExtra("streamUrl", streamURl);
         musicPlayerIntent.putExtra("albumUrl", albumUrl);
