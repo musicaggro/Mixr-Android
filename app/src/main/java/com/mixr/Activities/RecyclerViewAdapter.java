@@ -86,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    // Detects click then sends position of clicked item
     public interface OnTrackListener {
         void onTrackClick(int position);
     }

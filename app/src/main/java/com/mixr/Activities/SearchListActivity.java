@@ -22,9 +22,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mixr.MediaObjects.Track;
 import com.mixr.Networking.SoundCloudAPI;
 import com.mixr.Networking.SoundCloudService;
-import com.mixr.MediaObjects.Track;
 import com.mixr.R;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     private void initRecyclerView() {
         trackArrList = new ArrayList<>();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        // Avoids expensive size checks of items being added/removed
+        // Avoids expensive checks of item containers size being changed
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,7 +90,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     loadTracks(tracks);
                 } else {
                     // HTTP hard error caught by retrofit passed to a toast message method
-                    toastMsg("Error code " + response.code());
+                    toastMsg("HTTP code " + response.code());
                 }
             }
 
@@ -144,23 +144,23 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         Toast.makeText(SearchListActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
-    // Custom recyclerView item listener that gets selected track info and passes it to an intent
-    // TODO: Possible refactor to send a track object instead of individual attributes
+    // Custom recyclerView item listener that gets selected track then passes info to an intent
     @Override
     public void onTrackClick(int position) {
-        startMusicPlayer(trackArrList.get(position).getSongStreamUrl(),
-                trackArrList.get(position).getSongTitle(),
-                trackArrList.get(position).getSongArtworkUrl(),
-                trackArrList.get(position).getSongDuration());
-    }
+        // TODO: Possible refactor to send a track object instead of individual attributes
+        // problem that passing a object directly is not possible without serialization or parcelable
+        // https://coderwall.com/p/vfbing/passing-objects-between-activities-in-android
 
-    // Receives track information to start track playback in a new activity
-    private void startMusicPlayer(String streamURl, String songTitle, String albumUrl, int duration) {
+        String streamURL = trackArrList.get(position).getSongStreamUrl();
+        String albumUrl = trackArrList.get(position).getSongArtworkUrl();
+        String songTitle = trackArrList.get(position).getSongTitle();
+        int songDuration = trackArrList.get(position).getSongDuration();
+
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
-        musicPlayerIntent.putExtra("streamUrl", streamURl);
+        musicPlayerIntent.putExtra("streamUrl", streamURL);
         musicPlayerIntent.putExtra("albumUrl", albumUrl);
         musicPlayerIntent.putExtra("songTitle", songTitle);
-        musicPlayerIntent.putExtra("songDuration", duration);
+        musicPlayerIntent.putExtra("songDuration", songDuration);
         startActivity(musicPlayerIntent);
     }
 }
