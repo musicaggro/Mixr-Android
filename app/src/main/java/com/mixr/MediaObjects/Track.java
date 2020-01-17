@@ -77,9 +77,7 @@ public class Track {
         return songTotalLikes;
     }
 
-    public String getSongArtworkUrl() {
-        return songArtworkUrl;
-    }
+    public String getSongArtworkUrl() { return songArtworkUrl; }
 
     public String getSongStreamUrl() {
         return songStreamUrl;

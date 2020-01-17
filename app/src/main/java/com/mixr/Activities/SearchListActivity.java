@@ -113,7 +113,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     // TODO: Idea of switching to SoundCloud trending tracks to display on app start
     // API doesn't contain a direct way of getting top tracks
     // https://stackoverflow.com/questions/35688367/access-soundcloud-charts-with-api
-    public void loadListOfDefaultRecentTracks() {
+    private void loadListOfDefaultRecentTracks() {
         soundcloudService.getRecentTracks("last_two_weeks").enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -163,4 +163,5 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         musicPlayerIntent.putExtra("songDuration", songDuration);
         startActivity(musicPlayerIntent);
     }
+
 }

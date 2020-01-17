@@ -39,7 +39,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private TextView totalSongTimeTV;
     private ImageButton playPauseButtonIB;
     private TextView songTitleTV;
-
+    // Music player object
     private MediaPlayer mediaPlayer;
 
     @Override
@@ -168,7 +168,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         timeStr += sec;
         return timeStr;
     }
-
 
     public void playSong(View view) {
         if (!mediaPlayer.isPlaying()) {
