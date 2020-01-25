@@ -1,4 +1,4 @@
-package com.mixr.Activities;
+package com.mixr.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +19,13 @@ import java.util.List;
  * Project Name: Mixr
  * Package Name: com.mixr.Adapter
  * Date: 11/20/2019
- * Description:
+ * Description: Recycler Adapters adapts each list item to the main containers layout.
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
  */
+
+// Extends RecyclerView adapter class then uses the custom ViewHolder type
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private List<Track> tracks;
@@ -34,21 +36,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.onTrackListener = onTrackListener;
     }
 
-    // recycling view putting items into container
+    // Creates new ViewHolder for each track object
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_list_item_layout, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_list_item_layout, viewGroup, false);
         return new ViewHolder(view, onTrackListener);
     }
 
+    // Sets displays data for each new ViewHolder and puts each one into the correct position
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
-        // Some songs don't have an album image so I set a default one
-        if(tracks.get(position).getSongArtworkUrl() != null){
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        // Some tracks don't have an album image set, so I set a default one
+        if (tracks.get(position).getSongArtworkUrl() != null) {
             Picasso.get()
                     .load(tracks.get(position).getSongArtworkUrl())
                     .into(viewHolder.albumImage);
-        }else{
+        } else {
             Picasso.get()
                     .load(R.drawable.default_album_image)
                     .into(viewHolder.albumImage);
@@ -61,6 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return tracks.size();
     }
 
+    // Holds each track in a view within the recycler
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView albumImage;
@@ -76,13 +80,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(this);
         }
 
+        // Detects click then sends position of clicked item
         @Override
         public void onClick(View v) {
             onTrackListener.onTrackClick(getAdapterPosition());
         }
     }
 
-    // Detects click then sends position of clicked item
+    // Interface allowing other activities to implement and use this adapters onclick function
     public interface OnTrackListener {
         void onTrackClick(int position);
     }

@@ -4,7 +4,11 @@ package com.mixr.Activities;
 /**
  * Project Name: Mixr
  * Date: 11/6/2019
- * Description: Search List activity to allow user menu_layout and display in a recycler view.
+ * Description: Activity that is the "main menu" of the app. It displays a default list of
+ * recently uploaded tracks from SoundCloud and allows users to search for songs via a SearchView.
+ * Requested songs then get sent via Retrofit, received as a JSON that's converted via GSON,
+ * then passed to a RecyclerView with a custom adapter that puts each track object into its
+ * own ViewHolders. Selecting a track starts a new activity that preps asynchronously for playback.
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
@@ -22,6 +26,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mixr.Adapters.RecyclerViewAdapter;
 import com.mixr.MediaObjects.Track;
 import com.mixr.Networking.SoundCloudAPI;
 import com.mixr.Networking.SoundCloudService;
@@ -37,7 +42,9 @@ import retrofit2.Response;
 public class SearchListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, RecyclerViewAdapter.OnTrackListener {
 
     private List<Track> trackArrList;
+    private RecyclerView recyclerView;
     private RecyclerViewAdapter listAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private SearchView searchView;
     private SoundCloudService soundcloudService = SoundCloudAPI.getSoundcloudService();
 
@@ -48,13 +55,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         initRecyclerView();
     }
 
+    // RecyclerView initialization
     private void initRecyclerView() {
         trackArrList = new ArrayList<>();
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         // Avoids expensive checks of item containers size being changed
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
         listAdapter = new RecyclerViewAdapter(trackArrList, this);
         recyclerView.setAdapter(listAdapter);
 
@@ -78,7 +88,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     // SearchView listener for user song searches, starts call to SoundCloud
     @Override
     public boolean onQueryTextSubmit(String query) {
-        // asynchronous call passing a callback function
+        // Asynchronous call passing a callback function
         soundcloudService.search(query).enqueue(new Callback<List<Track>>() {
             // Successfully received HTTP response, acts based on response code
             @Override

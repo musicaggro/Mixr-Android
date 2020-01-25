@@ -4,5 +4,8 @@
     <!-- MusicPlayerActivity Strings -->
     <string name="album_description">Description of album goes here wow!</string>
     <string name="play_button_description">Description of play button goes here wow!</string>
+    <string name="albumimage">AlbumImage</string>
+    <string name="currentSongTime">0:00</string>
+    <string name="totalSongTime">0:00</string>
 
 </resources>
