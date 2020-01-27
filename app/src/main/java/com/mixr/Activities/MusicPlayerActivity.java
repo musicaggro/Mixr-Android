@@ -21,10 +21,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mixr.Config.Config;
+import com.mixr.MediaObjects.Track;
 import com.mixr.R;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +41,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private TextView totalSongTimeTV;
     private ImageButton playPauseButtonIB;
     private TextView songTitleTV;
+
+    // SoundCloud Track Object
+    private Track selectedTrack;
+
     // Music player object
     private MediaPlayer mediaPlayer;
 
@@ -72,20 +78,26 @@ public class MusicPlayerActivity extends AppCompatActivity {
         songTitleTV = findViewById(R.id.songTitle);
     }
 
+    // Sets up MediaPlayer and Sets track object
     public void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioAttributes(new AudioAttributes
                 .Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build());
-        setSong();
+
+        if(getIntent().hasExtra("selectedTrack")){
+            selectedTrack = getIntent().getParcelableExtra("selectedTrack");
+            setSong(selectedTrack);
+        }else{
+            Toast.makeText(MusicPlayerActivity.this, "null song?", Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void setSong() {
-        Intent intent = getIntent();
-        String streamUrl = intent.getStringExtra("streamUrl");
-        String albumUrl = intent.getStringExtra("albumUrl");
-        String songTitle = intent.getStringExtra("songTitle");
+    public void setSong(Track selectedTrack) {
+        String streamUrl = selectedTrack.getSongStreamUrl();
+        String albumUrl = selectedTrack.getSongArtworkUrl();
+        String songTitle = selectedTrack.getSongTitle();
         songTitleTV.setText(songTitle);
 
         // Check to see if an album is provided if not a default one is set
@@ -144,12 +156,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
             int currentTimeNumb = msg.what;
             seekBar.setProgress(currentTimeNumb);
 
-
             String currentTimeStr = songTimeConversion(currentTimeNumb);
             currentSongTimeTV.setText(currentTimeStr);
 
-            Intent intent = getIntent();
-            int songDuration = intent.getIntExtra("songDuration", 0);
+            int songDuration = selectedTrack.getSongDuration();
             String songTotalDuration = songTimeConversion(songDuration);
             totalSongTimeTV.setText(songTotalDuration);
         }

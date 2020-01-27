@@ -46,13 +46,18 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     private RecyclerViewAdapter listAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SearchView searchView;
-    private SoundCloudService soundcloudService = SoundCloudAPI.getSoundcloudService();
+    private SoundCloudService soundcloudService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_list_layout);
+        initSoundCloudService();
         initRecyclerView();
+    }
+
+    private void initSoundCloudService() {
+        soundcloudService = SoundCloudAPI.getSoundcloudService();
     }
 
     // RecyclerView initialization
@@ -68,11 +73,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         listAdapter = new RecyclerViewAdapter(trackArrList, this);
         recyclerView.setAdapter(listAdapter);
 
-        // Populates recyclerview with recently uploaded tracks on app start
+        // Populates RecyclerView with recently uploaded tracks on app start
         loadListOfDefaultRecentTracks();
     }
 
-    // Sets custom menu and binds searchview with custom listener
+    // Sets custom menu and binds SearchView with custom listener
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -157,20 +162,8 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     // Custom recyclerView item listener that gets selected track then passes info to an intent
     @Override
     public void onTrackClick(int position) {
-        // TODO: Possible refactor to send a track object instead of individual attributes
-        // problem that passing a object directly is not possible without serialization or parcelable
-        // https://coderwall.com/p/vfbing/passing-objects-between-activities-in-android
-
-        String streamURL = trackArrList.get(position).getSongStreamUrl();
-        String albumUrl = trackArrList.get(position).getSongArtworkUrl();
-        String songTitle = trackArrList.get(position).getSongTitle();
-        int songDuration = trackArrList.get(position).getSongDuration();
-
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
-        musicPlayerIntent.putExtra("streamUrl", streamURL);
-        musicPlayerIntent.putExtra("albumUrl", albumUrl);
-        musicPlayerIntent.putExtra("songTitle", songTitle);
-        musicPlayerIntent.putExtra("songDuration", songDuration);
+        musicPlayerIntent.putExtra("selectedTrack", trackArrList.get(position));
         startActivity(musicPlayerIntent);
     }
 
