@@ -9,7 +9,6 @@ package com.mixr.Activities;
  * Copyright © Elias Afzalzada - All Rights Reserved
  */
 
-import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,7 +52,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_layout);
         initViewIds();
         initMediaPlayer();
-        initSeekBar();
     }
 
     @Override
@@ -88,15 +85,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("selectedTrack")){
             selectedTrack = getIntent().getParcelableExtra("selectedTrack");
-            setSong(selectedTrack);
-        }else{
-            Toast.makeText(MusicPlayerActivity.this, "null song?", Toast.LENGTH_LONG).show();
+            setSong();
+            setSeekBar();
         }
     }
 
-    public void setSong(Track selectedTrack) {
+    public void setSong() {
         String streamUrl = selectedTrack.getSongStreamUrl();
-        String albumUrl = selectedTrack.getSongArtworkUrl();
+        String albumUrl = selectedTrack.getSongAlbumUrl();
         String songTitle = selectedTrack.getSongTitle();
         songTitleTV.setText(songTitle);
 
@@ -115,9 +111,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public void initSeekBar() {
-        Intent intent = getIntent();
-        seekBar.setMax(intent.getIntExtra("songDuration", 0));
+    public void setSeekBar() {
+        seekBar.setMax(selectedTrack.getSongDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

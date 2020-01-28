@@ -162,8 +162,9 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     // Custom recyclerView item listener that gets selected track then passes info to an intent
     @Override
     public void onTrackClick(int position) {
+        Track selectedTrack = trackArrList.get(position);
         Intent musicPlayerIntent = new Intent(this, MusicPlayerActivity.class);
-        musicPlayerIntent.putExtra("selectedTrack", trackArrList.get(position));
+        musicPlayerIntent.putExtra("selectedTrack", selectedTrack);
         startActivity(musicPlayerIntent);
     }
 

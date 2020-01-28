@@ -47,9 +47,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         // Some tracks don't have an album image set, so I set a default one
-        if (tracks.get(position).getSongArtworkUrl() != null) {
+        if (tracks.get(position).getSongAlbumUrl() != null) {
             Picasso.get()
-                    .load(tracks.get(position).getSongArtworkUrl())
+                    .load(tracks.get(position).getSongAlbumUrl())
                     .into(viewHolder.albumImage);
         } else {
             Picasso.get()
@@ -76,7 +76,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             albumImage = itemView.findViewById(R.id.albumCover);
             songTitle = itemView.findViewById(R.id.songTitle);
             this.onTrackListener = onTrackListener;
-
             itemView.setOnClickListener(this);
         }
 

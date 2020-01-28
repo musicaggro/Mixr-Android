@@ -11,8 +11,9 @@ import com.google.gson.annotations.SerializedName;
  * Package Name: com.mixr.Application
  * Date: 11/12/2019
  * Description: Track object that takes JSON and matches
- * it to the tracks appropriate fields via GSON.
- * <p>
+ * it to the tracks appropriate fields via GSON. Track is now parcelable to
+ * allow the passing of track objects with putExtras between activities.
+ *
  * Thoughts: I was going to use some form of gson.fromJson(soundcloudJSON, class)
  * but saw an example of how @serializedname is cleaner and a more flexible
  * alternative, json field name being different from class value name wont matter.
@@ -44,7 +45,7 @@ public class Track implements Parcelable {
     private String songTotalLikes;
 
     @SerializedName("artwork_url")
-    private String songArtworkUrl;
+    private String songAlbumUrl;
 
     @SerializedName("stream_url")
     private String songStreamUrl;
@@ -60,7 +61,7 @@ public class Track implements Parcelable {
         songDuration = in.readInt();
         songTotalPlaybacks = in.readString();
         songTotalLikes = in.readString();
-        songArtworkUrl = in.readString();
+        songAlbumUrl = in.readString();
         songStreamUrl = in.readString();
         songCurrentState = in.readString();
     }
@@ -86,7 +87,7 @@ public class Track implements Parcelable {
         dest.writeInt(songDuration);
         dest.writeString(songTotalPlaybacks);
         dest.writeString(songTotalLikes);
-        dest.writeString(songArtworkUrl);
+        dest.writeString(songAlbumUrl);
         dest.writeString(songStreamUrl);
         dest.writeString(songCurrentState);
     }
@@ -124,8 +125,8 @@ public class Track implements Parcelable {
         return songTotalLikes;
     }
 
-    public String getSongArtworkUrl() {
-        return songArtworkUrl;
+    public String getSongAlbumUrl() {
+        return songAlbumUrl;
     }
 
     public String getSongStreamUrl() {
