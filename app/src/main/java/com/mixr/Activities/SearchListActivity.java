@@ -7,8 +7,8 @@ package com.mixr.Activities;
  * Description: Activity that is the "main menu" of the app. It displays a default list of
  * recently uploaded tracks from SoundCloud and allows users to search for songs via a SearchView.
  * Requested songs then get sent via Retrofit, received as a JSON that's converted via GSON,
- * then passed to a RecyclerView with a custom adapter that puts each track object into its
- * own ViewHolders. Selecting a track starts a new activity that preps asynchronously for playback.
+ * then passed to a RecyclerView with a custom adapter that displays a list of tracks.
+ * Selecting a track starts a new activity that preps asynchronously for playback.
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
@@ -159,7 +159,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         Toast.makeText(SearchListActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
-    // Custom recyclerView item listener that gets selected track then passes info to an intent
+    // Custom recyclerView item listener that gets selected track then passes object to an intent
     @Override
     public void onTrackClick(int position) {
         Track selectedTrack = trackArrList.get(position);

@@ -19,7 +19,14 @@ import java.util.List;
  * Project Name: Mixr
  * Package Name: com.mixr.Adapter
  * Date: 11/20/2019
- * Description: Recycler Adapters adapts each list item to the main containers layout.
+ * Description: Adapter class for RecyclerView that takes data from track list
+ * and "adapts" them to ViewHolders views. Each ViewHolder contains child views
+ * in this case an ImageView and a TextView. The Track data is bound to each view
+ * within the ViewHolder. These ViewHolders are recycled as they go off screen
+ * for the next upcoming item with Rebound data based on its position in the list.
+ *
+ * I set the Adapter to require an OnClick interface so activities can set
+ * there own OnClick functionality based on what that activity requires.
  *
  * @Author Elias Afzalzada
  * Copyright © Elias Afzalzada - All Rights Reserved
@@ -31,19 +38,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Track> tracks;
     private OnTrackListener onTrackListener;
 
+    // Adapter constructor for track objects and an OnClick listener
     public RecyclerViewAdapter(List<Track> tracks, OnTrackListener onTrackListener) {
         this.tracks = tracks;
         this.onTrackListener = onTrackListener;
     }
 
-    // Creates new ViewHolder for each track object
+    // Constructor for new ViewHolders(Views within a View) for each track item along with listener
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_list_item_layout, viewGroup, false);
-        return new ViewHolder(view, onTrackListener);
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.track_list_item_layout, viewGroup, false);
+        ViewHolder vh = new ViewHolder(view, onTrackListener);
+        return vh;
     }
 
-    // Sets displays data for each new ViewHolder and puts each one into the correct position
+    // Binds data for each new ViewHolders based on position within the list
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         // Some tracks don't have an album image set, so I set a default one
@@ -64,13 +74,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return tracks.size();
     }
 
-    // Holds each track in a view within the recycler
+    // Provides a reference to the views for each track item.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView albumImage;
         TextView songTitle;
         OnTrackListener onTrackListener;
 
+        // sets each views and item OnClick listener
         public ViewHolder(@NonNull View itemView, OnTrackListener onTrackListener) {
             super(itemView);
             albumImage = itemView.findViewById(R.id.albumCover);
@@ -86,7 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    // Interface allowing other activities to implement and use this adapters onclick function
+    // Interface allowing other activities to implement OnClick
     public interface OnTrackListener {
         void onTrackClick(int position);
     }

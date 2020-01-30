@@ -11,8 +11,9 @@ import com.google.gson.annotations.SerializedName;
  * Package Name: com.mixr.Application
  * Date: 11/12/2019
  * Description: Track object that takes JSON and matches
- * it to the tracks appropriate fields via GSON. Track is now parcelable to
- * allow the passing of track objects with putExtras between activities.
+ * it to the tracks appropriate fields via GSON. Track is now parcelable
+ * (android interface) to allow the passing of track objects with putExtras
+ * between activities.
  *
  * Thoughts: I was going to use some form of gson.fromJson(soundcloudJSON, class)
  * but saw an example of how @serializedname is cleaner and a more flexible
@@ -66,6 +67,7 @@ public class Track implements Parcelable {
         songCurrentState = in.readString();
     }
 
+    // Required for the Android framework used to create new objects individually or in arrays
     public static final Creator<Track> CREATOR = new Creator<Track>() {
         @Override
         public Track createFromParcel(Parcel in) {
@@ -78,6 +80,7 @@ public class Track implements Parcelable {
         }
     };
 
+    // Object serialization occurs here, writing to object content to parcel
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(songTitle);
