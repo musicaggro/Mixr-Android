@@ -1,21 +1,11 @@
 package com.mixr.Activities;
 
-/**
- * Project Name: Mixr
- * Date: 11/6/2019
- * Description: Music Player activity to play received song from Search List activity
- *
- * @Author Elias Afzalzada
- * Copyright © Elias Afzalzada - All Rights Reserved
- */
-
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -23,12 +13,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mixr.Config.Config;
 import com.mixr.MediaObjects.Track;
 import com.mixr.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+
+/**
+ * Project Name: Mixr
+ * Date: 11/6/2019
+ * Description: Media Player Activity Receives a track object from
+ * main activity (SearchListActivity) then proceeds to set up the activities views
+ * using the track objects passed information. MediaPlayer is setup and given a
+ * stream url from the track object and a callback is used to determine when its
+ * ready for playback. When MediaPlayer has finished loading, the song auto plays
+ * and the user may use the seekbar to scrub through specific times in the song.
+ *
+ * @Author Elias Afzalzada
+ * Copyright © Elias Afzalzada - All Rights Reserved
+ */
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
@@ -50,10 +53,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music_player_layout);
-        initViewIds();
-        initMediaPlayer();
+        initMediaPlayerViews();
+        setTrackInfoViews();
+        setMediaPlayer();
     }
 
+    // Releases MediaPlayer when the activity is destroyed
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -66,51 +71,73 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public void initViewIds() {
+    // Grabs Views for updating track info
+    public void initMediaPlayerViews() {
         albumCoverIV = findViewById(R.id.albumCover);
         seekBar = findViewById(R.id.seekBar);
         currentSongTimeTV = findViewById(R.id.currentSongTime);
         totalSongTimeTV = findViewById(R.id.totalSongTime);
-        playPauseButtonIB = findViewById(R.id.playButton);
         songTitleTV = findViewById(R.id.songTitle);
+        playPauseButtonIB = findViewById(R.id.playButton);
     }
 
-    // Sets up MediaPlayer and Sets track object
-    public void initMediaPlayer() {
+    // Sets track info views on media player activity screen
+    public void setTrackInfoViews(){
+        selectedTrack = getIntent().getParcelableExtra("selectedTrack");
+
+        // Sets song title view
+        songTitleTV.setText(selectedTrack.getSongTitle());
+
+        // Sets song total time view
+        int songDuration = selectedTrack.getSongDuration();
+        String songTotalDuration = trackTimeConversion(songDuration);
+        totalSongTimeTV.setText(songTotalDuration);
+
+
+        // Check to see if an album image is provided if not a default one is set
+        if (selectedTrack.getSongAlbumUrl() != null) {
+            Picasso.get().load(selectedTrack.getSongAlbumUrl()).into(albumCoverIV);
+        } else {
+            Picasso.get().load(R.drawable.default_album_image).into(albumCoverIV);
+        }
+    }
+
+    // Sets up MediaPlayer and Sets Source Stream
+    public void setMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioAttributes(new AudioAttributes
                 .Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build());
-
-        if(getIntent().hasExtra("selectedTrack")){
-            selectedTrack = getIntent().getParcelableExtra("selectedTrack");
-            setSong();
-            setSeekBar();
-        }
-    }
-
-    public void setSong() {
-        String streamUrl = selectedTrack.getSongStreamUrl();
-        String albumUrl = selectedTrack.getSongAlbumUrl();
-        String songTitle = selectedTrack.getSongTitle();
-        songTitleTV.setText(songTitle);
-
-        // Check to see if an album is provided if not a default one is set
-        if (albumUrl != null) {
-            Picasso.get().load(albumUrl).into(albumCoverIV);
-        } else {
-            Picasso.get().load(R.drawable.default_album_image).into(albumCoverIV);
-        }
-
         try {
-            mediaPlayer.setDataSource(streamUrl + "?client_id=" + Config.CLIENT_ID);
+            mediaPlayer.setDataSource(selectedTrack.getSongStreamUrl());
             mediaPlayer.prepareAsync();
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             e.printStackTrace();
         }
+
+        // MediaPlayer callback when finished loading and starts playing, sets seekbar, and an OnClick listener
+        mediaPlayer.setOnPreparedListener(mp -> {
+            toggleTrackPlayPause();
+            setSeekBar();
+            playPauseButtonIB.setOnClickListener(v -> toggleTrackPlayPause());
+        });
+        mediaPlayer.setOnCompletionListener(mp -> playPauseButtonIB.setImageResource(R.drawable.play));
     }
 
+    // Toggles mediaPlayer play or pause state
+    public void toggleTrackPlayPause() {
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+            playPauseButtonIB.setImageResource(R.drawable.pause);
+        } else {
+            mediaPlayer.pause();
+            playPauseButtonIB.setImageResource(R.drawable.play);
+        }
+    }
+
+    // SeekBar allows user to scrub through playback forward, back, etc.
     public void setSeekBar() {
         seekBar.setMax(selectedTrack.getSongDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -131,14 +158,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
 
-        // thread to update seekbar and song time stamps
+        // Thread to update SeekBar position as song is played
         new Thread(() -> {
             while (mediaPlayer != null) {
                 try {
                     Message msg = new Message();
                     msg.what = mediaPlayer.getCurrentPosition();
                     handler.sendMessage(msg);
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                 }
             }
@@ -146,21 +173,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }.start();
     }
 
+    // Updates of current song time view
     Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
-            int currentTimeNumb = msg.what;
-            seekBar.setProgress(currentTimeNumb);
+            int currentTimeNum = msg.what;
+            seekBar.setProgress(currentTimeNum);
 
-            String currentTimeStr = songTimeConversion(currentTimeNumb);
+            String currentTimeStr = trackTimeConversion(currentTimeNum);
             currentSongTimeTV.setText(currentTimeStr);
-
-            int songDuration = selectedTrack.getSongDuration();
-            String songTotalDuration = songTimeConversion(songDuration);
-            totalSongTimeTV.setText(songTotalDuration);
         }
     };
 
-    public String songTimeConversion(int time) {
+    // Converts track time from Milliseconds to minutes/seconds
+    public String trackTimeConversion(int time) {
         String timeStr = "";
         int min = time / 1000 / 60;
         int sec = time / 1000 % 60;
@@ -168,19 +193,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         timeStr = min + ":";
         if (sec < 10) {
             timeStr += "0";
-
         }
+
         timeStr += sec;
         return timeStr;
     }
 
-    public void playSong(View view) {
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
-            playPauseButtonIB.setImageResource(R.drawable.pause);
-        } else {
-            mediaPlayer.pause();
-            playPauseButtonIB.setImageResource(R.drawable.play);
-        }
-    }
 }

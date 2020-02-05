@@ -1,19 +1,5 @@
 package com.mixr.Activities;
 
-
-/**
- * Project Name: Mixr
- * Date: 11/6/2019
- * Description: Activity that is the "main menu" of the app. It displays a default list of
- * recently uploaded tracks from SoundCloud and allows users to search for songs via a SearchView.
- * Requested songs then get sent via Retrofit, received as a JSON that's converted via GSON,
- * then passed to a RecyclerView with a custom adapter that displays a list of tracks.
- * Selecting a track starts a new activity that preps asynchronously for playback.
- *
- * @Author Elias Afzalzada
- * Copyright © Elias Afzalzada - All Rights Reserved
- */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,6 +24,19 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+/**
+ * Project Name: Mixr
+ * Date: 11/6/2019
+ * Description: Activity that is the "main menu" of the app. It displays a default list of
+ * recently uploaded tracks from SoundCloud and allows users to search for songs via a SearchView.
+ * Requested songs then get sent via Retrofit, received as a JSON that's converted via GSON,
+ * then passed to a RecyclerView with a custom adapter that displays a list of tracks.
+ * Selecting a track starts a new activity that preps asynchronously for playback.
+ *
+ * @Author Elias Afzalzada
+ * Copyright © Elias Afzalzada - All Rights Reserved
+ */
 
 public class SearchListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, RecyclerViewAdapter.OnTrackListener {
 
@@ -77,7 +76,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         loadListOfDefaultRecentTracks();
     }
 
-    // Sets custom menu and binds SearchView with custom listener
+    // Replaces default menu with custom menu and sets SearchView with custom listener
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -119,7 +118,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
-    //TODO: currently not in use but could be used by storing user search history and predicting
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
