@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -117,7 +118,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // MediaPlayer callback when finished loading and starts playing, sets seekbar, and an OnClick listener
+        // MediaPlayer callback when finished loading
+        // starts playing song, sets seekbar, and an
+        // OnClick listener for the play/pause button
         mediaPlayer.setOnPreparedListener(mp -> {
             toggleTrackPlayPause();
             setSeekBar();
@@ -167,6 +170,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                     handler.sendMessage(msg);
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
+                    Log.e("MusicPlayerActivity", "Thread Error", e);
                 }
             }
         }) {
@@ -184,9 +188,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     };
 
-    // Converts track time from Milliseconds to minutes/seconds
+    // Converts track time from Milliseconds to minutes:seconds
     public String trackTimeConversion(int time) {
-        String timeStr = "";
+        String timeStr;
         int min = time / 1000 / 60;
         int sec = time / 1000 % 60;
 
