@@ -1,8 +1,12 @@
 # Mixr
 
 
-# Built With
-
+# Dependencies
+* [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)
+* [Gson](https://github.com/google/gson)
+* [GsonConverter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson)
+* [RetroFit](https://github.com/square/retrofit)
+* [Picasso](https://github.com/square/picasso)
 
 # Pictures
 [![Image from Gyazo](https://i.gyazo.com/8bf4d9c459ee8261e8d7455b3ac08264.gif)](https://gyazo.com/8bf4d9c459ee8261e8d7455b3ac08264)
