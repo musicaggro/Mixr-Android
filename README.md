@@ -2,9 +2,8 @@
 Android music streaming App that allows users to search through SoundClouds database of songs and select a track for media playback.
 
 Typing away during development this experience just confirmed my love for android, really nailing in my committed future to the app dev space!
-Some of the features used here were enabled by a wide range of modern Android technologies such as,
+Some of the tech stack used here were enabled by a wide range of modern Android technologies such as,
 
-### Tech Stack
 - Working with the newer RecyclerView to display a list of tracks
 - Implementing an ActionBar to be used in the main menu for search functionality
 - Using Parcelable to pass a track object from the list activity to a MediaPlayer activity for playback
