@@ -8,7 +8,8 @@ Some of the features used here were enabled by a wide range of modern Android te
 - Implementing an ActionBar to be used in the main menu for search functionality
 - Using Parcelable to pass a track object from the list activity to a MediaPlayer activity for playback
 - Setting up the fantastic combination of RetroFit and GSON, to handle networking
-- UI layouts with XML and androidx.widget components
+- Planning UI using XML, putting it into place using ConstrainLayout and RelativeLayout
+- Placing androidx.widget components for music player related functionality
 
 # Dependencies (Tech Stack)
 * [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)
