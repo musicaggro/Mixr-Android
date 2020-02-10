@@ -12,13 +12,13 @@ Some of the features used here were enabled by a wide range of modern Android te
 - Placing androidx.widget components for music player related functionality
 
 # Dependencies
-* [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)
-* [ActionBar](https://developer.android.com/reference/android/app/ActionBar)
-* [Parcellable](https://developer.android.com/reference/android/os/Parcelable)
-* [Gson](https://github.com/google/gson)
-* [GsonConverter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson)
-* [RetroFit](https://github.com/square/retrofit)
-* [Picasso](https://github.com/square/picasso)
+* [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview) A scrollable list populated by Track Objects from SoundCloud
+* [ActionBar](https://developer.android.com/reference/android/app/ActionBar) A bar at the top of the main list activity for Searching Tracks on SoundCloud
+* [Parcellable](https://developer.android.com/reference/android/os/Parcelable) Allows passing of a Track Object between activities for quick retrieval of track information
+* [Gson](https://github.com/google/gson) Eases creation of Java Objects from JSON Objects
+* [GsonConverter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson) Used by RetroFit to parse HTTP responses into an object
+* [RetroFit](https://github.com/square/retrofit) REST client allowing HTTP calls to Web APIs in this case SoundClouds API
+* [Picasso](https://github.com/square/picasso) Image downloader and caching library for quickly grabbing Album images off SoundCloud
 
 # Pictures
 [![Image from Gyazo](https://i.gyazo.com/8bf4d9c459ee8261e8d7455b3ac08264.gif)](https://gyazo.com/8bf4d9c459ee8261e8d7455b3ac08264)
