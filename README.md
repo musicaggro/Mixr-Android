@@ -1,5 +1,7 @@
 # Mixr
-
+Android music streaming App that allows users to search through SoundClouds database of songs for media playback.
+This android app was an amazing learning experience that covered a wide array of the android development process. 
+During development this just confirmed my love for android and really nailed in my future in the app dev space! 
 
 # Dependencies
 * [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)
