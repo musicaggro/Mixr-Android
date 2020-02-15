@@ -66,9 +66,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         // Avoids expensive checks of item containers size being changed
         recyclerView.setHasFixedSize(true);
 
+        // Sets layout style in this case LinearLayout for Views in ViewHolders
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        // Sets custom adapter I have it set to take an onClickListener specified in this class
         listAdapter = new RecyclerViewAdapter(trackArrList, this);
         recyclerView.setAdapter(listAdapter);
 
